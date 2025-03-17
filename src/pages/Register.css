@@ -1,0 +1,138 @@
+/* Dark Theme Styles */
+#form-container {
+    background-color: #181818; /* Dark background */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .form-content {
+    background-color: #222; /* Dark gray background */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 350px;
+    text-align: center;
+    color: #fff; /* White text */
+    position: relative;
+  }
+  
+  /* Centered and Styled Login Heading */
+  #form-header {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #222;
+    padding: 10px 20px;
+    border-radius: 8px 8px 0 0;
+    font-size: 22px;
+    font-weight: bold;
+    color: #fff; /* White color */
+    width: 100%;
+  }
+  
+  .form-content label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #bbb; /* Light gray */
+  }
+  
+  .form-content input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #333; /* Dark input background */
+    color: #fff;
+  }
+  
+  .form-content input::placeholder {
+    color: #bbb;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Blue button */
+    border: none;
+    color: white;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .or-divider {
+    margin: 15px 0;
+    color: #bbb;
+  }
+  
+  p {
+    color: #bbb;
+  }
+  
+  p a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  p a:hover {
+    text-decoration: underline;
+  }
+  
+  
+  .error-message {
+    color: #ff4d4d;
+    font-size: 12px;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255, 77, 77, 0.1);
+    padding: 8px;
+    border-radius: 5px;
+    border-left: 3px solid #ff4d4d;
+    font-weight: 500;
+  }
+  
+  /* Add a subtle red glow effect on invalid fields */
+  input:focus:invalid {
+    border-color: #ff4d4d;
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+  }
+  
+  /* Input field error styling */
+  .input-error {
+    border: 1px solid #ff4d4d !important;
+    box-shadow: 0 0 5px rgba(255, 77, 77, 0.5);
+  }
+  
+  /* Error Icon */
+  .error-icon {
+    color: #ff4d4d;
+    font-size: 14px;
+  }
+  
+
+  .radio-group {
+    margin-top: 15px;
+}
+
+.radio-options {
+    display: flex;
+    gap: 10px;
+}
+
+.radio-options label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
