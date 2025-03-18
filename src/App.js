@@ -1,52 +1,80 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import Navbar from "./components/NavbarBook";
-import Home from "./pages/Home";
-import Login from "./pages/LoginPage";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
-import Cart from "./pages/Cart";
-import Orders from "./pages/Orders";
-import AddBook from "./pages/AddBook";
-import About from './pages/AboutUs'
-import Books from "./pages/Books";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './pages/Home';
+import AboutPage from './pages/AboutUs';
+import BookPage from './pages/Books';
+import ProfilePage from './pages/Profile';
+import CartPage from './pages/Cart';
+import OrdersPage from './pages/Orders';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/Register';
+import NavbarBook from './components/NavbarBook';
+import AuthProvider from './context/AuthContext';
+import ProtectedRoute from './routes/ProtectedRoute';
+import BuyerDashboard from './pages/BuyerDashboard';
+import SellerDashboard from './pages/BuyerDashboard';
 
-const PrivateRoute = ({ element, roleRequired }) => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
+const App = () => {
+  return (
+    <AuthProvider>
+      <NavbarBook />
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/book" element={<BookPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-    if (!token) {
-        return <Navigate to="/login" />;
-    }
+        {/* Buyer Protected Routes */}
+        <Route
+          path="/buyer"
+          element={
+            <ProtectedRoute allowedRoles={['buyer']}>
+              <BuyerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute allowedRoles={['buyer']}>
+              <ProfilePage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <ProtectedRoute allowedRoles={['buyer']}>
+              <CartPage />
+            </ProtectedRoute>
+          }
+        />
 
-    if (role !== roleRequired) {
-        return <Navigate to="/" />;
-    }
+        {/* Seller Protected Routes */}
+        <Route
+          path="/seller"
+          element={
+            <ProtectedRoute allowedRoles={['seller']}>
+              <SellerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute allowedRoles={['seller']}>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
 
-    return element;
+        {/* Catch-all route for unknown pages */}
+        <Route path="*" element={<div>404 - Not Found</div>} />
+      </Routes>
+    </AuthProvider>
+  );
 };
-
-function App() {
-    return (
-        <Router>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/book" element={<Books />} />
-                
-
-                {/* Buyer-only routes */}
-                <Route path="/profile" element={<PrivateRoute element={<Profile />} roleRequired="buyer" />} />
-                <Route path="/cart" element={<PrivateRoute element={<Cart />} roleRequired="buyer" />} />
-
-                {/* Seller-only routes */}
-                <Route path="/orders" element={<PrivateRoute element={<Orders />} roleRequired="seller" />} />
-                <Route path="/add-book" element={<PrivateRoute element={<AddBook />} roleRequired="seller" />} />
-            </Routes>
-        </Router>
-    );
-}
 
 export default App;
