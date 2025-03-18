@@ -1,6 +1,5 @@
 import React from "react";
 import { Container, Row, Col, Button, Card } from "react-bootstrap";
-import NavbarBook from '../components/NavbarBook'; // Importing your Navbar component
 import Footer from "../components/Footer";
 import './Home.css'
 
@@ -25,8 +24,7 @@ const books = [
 const Home = () => {
   return (
     <>
-      {/* Navbar */}
-      <NavbarBook />
+      
 
       {/* Hero Section */}
       <header className="hero">
