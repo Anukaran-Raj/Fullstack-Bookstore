@@ -1,0 +1,109 @@
+/* Cart.css */
+
+body, #root {
+    background-color: #121212;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Container Styling */
+  .cart-container {
+    background-color: #121212;
+    color: #ffffff;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  /* Heading */
+  .cart-heading {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Empty Cart Message */
+  .empty-cart {
+    color: #aaa;
+    text-align: center;
+    font-size: 1.2rem;
+  }
+  
+  /* Cart List */
+  .cart-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .cart-item {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    border: 1px solid #333;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease;
+  }
+  
+  .cart-item:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Remove Button */
+  .remove-btn {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .remove-btn:hover {
+    background-color: #555;
+  }
+  
+  /* Total Amount */
+  .total-amount {
+    color: #fff;
+    font-size: 1.2rem;
+    margin-top: 20px;
+  }
+  
+  /* Cart Actions */
+  .cart-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .clear-cart-btn,
+  .proceed-btn {
+    background-color: #333;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .clear-cart-btn:hover,
+  .proceed-btn:hover {
+    background-color: #555;
+  }
+  
+  .clear-cart-btn:disabled,
+  .proceed-btn:disabled {
+    background-color: #222;
+    color: #555;
+    cursor: not-allowed;
+  }
+  

@@ -55,9 +55,9 @@ const LoginForm = () => {
 
             // ✅ Redirect based on user role
             if (role === "buyer") {
-              navigate("/buyer");
+              navigate("/");
             } else if (role === "seller") {
-              navigate("/seller");
+              navigate("/");
             } else {
               navigate("/");
             }

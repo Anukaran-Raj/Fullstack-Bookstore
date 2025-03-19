@@ -11,70 +11,85 @@ import RegisterPage from './pages/Register';
 import NavbarBook from './components/NavbarBook';
 import AuthProvider from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
-import BuyerDashboard from './pages/BuyerDashboard';
-import SellerDashboard from './pages/BuyerDashboard';
+import AddBook from './pages/AddBook'
+import { BrowserRouter } from 'react-router-dom';
+import Payment from './pages/Payment';
 
 const App = () => {
-  return (
-    <AuthProvider>
-      <NavbarBook />
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/book" element={<BookPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+    return (
+        <BrowserRouter>
+        <AuthProvider>
+            <NavbarBook />
+            <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="/book" element={<BookPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-        {/* Buyer Protected Routes */}
-        <Route
-          path="/buyer"
-          element={
-            <ProtectedRoute allowedRoles={['buyer']}>
-              <BuyerDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute allowedRoles={['buyer']}>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-            <ProtectedRoute allowedRoles={['buyer']}>
-              <CartPage />
-            </ProtectedRoute>
-          }
-        />
+                {/* Buyer Protected Routes */}
+                
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute allowedRoles={['buyer']}>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/cart"
+                    element={
+                        <ProtectedRoute allowedRoles={['buyer']}>
+                            <CartPage />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/payment"
+                    element={
+                        <ProtectedRoute allowedRoles={['buyer']}>
+                            <Payment />
+                        </ProtectedRoute>
+                    }
+                />
 
-        {/* Seller Protected Routes */}
-        <Route
-          path="/seller"
-          element={
-            <ProtectedRoute allowedRoles={['seller']}>
-              <SellerDashboard />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/orders"
-          element={
-            <ProtectedRoute allowedRoles={['seller']}>
-              <OrdersPage />
-            </ProtectedRoute>
-          }
-        />
+                {/* Seller Protected Routes */}
+                
+                <Route
+                    path="/orders"
+                    element={
+                        <ProtectedRoute allowedRoles={['seller']}>
+                            <OrdersPage />
+                        </ProtectedRoute>
+                    }
 
-        {/* Catch-all route for unknown pages */}
-        <Route path="*" element={<div>404 - Not Found</div>} />
-      </Routes>
-    </AuthProvider>
-  );
+                />
+                <Route
+                    path="/profile"
+                    element={
+                        <ProtectedRoute allowedRoles={['seller']}>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    }
+                />
+                 <Route
+                    path="/AddBook"
+                    element={
+                        <ProtectedRoute allowedRoles={['seller']}>
+                            <AddBook />
+                        </ProtectedRoute>
+                    }
+                />
+
+                {/* Catch-all route for unknown pages */}
+                <Route path="*" element={<div>404 - Not Found</div>} />
+            </Routes>
+        </AuthProvider>
+        </BrowserRouter>
+        
+    );
 };
 
 export default App;

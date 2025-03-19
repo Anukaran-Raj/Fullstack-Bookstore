@@ -27,7 +27,13 @@ const NavbarBook = () => {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary px-3" bg="dark" data-bs-theme="dark">
+    <Navbar 
+      expand="lg" 
+      className="bg-body-tertiary px-3" 
+      bg="dark" 
+      data-bs-theme="dark"
+     
+    >
       <Container fluid>
         {/* Logo */}
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -75,11 +81,8 @@ const NavbarBook = () => {
                   <Dropdown.Item as={Link} to="/orders">
                     Orders
                   </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/add-book">
+                  <Dropdown.Item as={Link} to="/AddBook">
                     Add Book
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/manage-listings">
-                    Manage Listings
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
