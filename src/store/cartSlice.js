@@ -9,18 +9,25 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      console.log("Adding to cart:", action.payload); // Debugging log
-      const existingItem = state.cartItems.find(item => item.id === action.payload.id);
+      console.log("Adding to cart:", action.payload);
+
+      // Create a new array to trigger re-render
+      const updatedCart = [...state.cartItems];
+      const existingItem = updatedCart.find(item => item.id === action.payload.id);
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.cartItems.push({ ...action.payload, quantity: 1 });
+        updatedCart.push({ ...action.payload, quantity: 1 });
       }
-      localStorage.setItem("cart", JSON.stringify(state.cartItems)); // Persist cart
+
+      state.cartItems = updatedCart; // Update Redux state
+      localStorage.setItem("cart", JSON.stringify(updatedCart)); // Persist cart
     },
     removeFromCart: (state, action) => {
-      state.cartItems = state.cartItems.filter(item => item.id !== action.payload);
-      localStorage.setItem("cart", JSON.stringify(state.cartItems));
+      const updatedCart = state.cartItems.filter(item => item.id !== action.payload);
+      state.cartItems = updatedCart;
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
     },
     clearCart: (state) => {
       state.cartItems = [];

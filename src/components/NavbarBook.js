@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Container, Nav, Navbar, Image, Dropdown, Button } from 'react-bootstrap';
+import { Container, Nav, Navbar, Image, Dropdown, Button, Form } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaShoppingCart } from 'react-icons/fa';
 import { AuthContext } from '../context/AuthContext';
@@ -10,6 +10,7 @@ const NavbarBook = () => {
   const { user, logout } = useContext(AuthContext);
   const [show, setShow] = useState(false);
   const [sellerDropdown, setSellerDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const getUserInitials = (name) => {
     return name
@@ -26,14 +27,15 @@ const NavbarBook = () => {
     navigate('/login');
   };
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/book?search=${searchQuery}`);
+    }
+  };
+
   return (
-    <Navbar 
-      expand="lg" 
-      className="bg-body-tertiary px-3" 
-      bg="dark" 
-      data-bs-theme="dark"
-     
-    >
+    <Navbar expand="lg" className="bg-body-tertiary px-3" bg="dark" data-bs-theme="dark">
       <Container fluid>
         {/* Logo */}
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
@@ -45,11 +47,7 @@ const NavbarBook = () => {
         <Navbar.Collapse id="navbarScroll">
           <Nav className="ms-auto my-2 my-lg-0" navbarScroll>
             {/* Welcome Message */}
-            {user && (
-              <Nav.Link className="welcome-message">
-                Welcome, {user.username}
-              </Nav.Link>
-            )}
+            {user && <Nav.Link className="welcome-message">Welcome, {user.username}</Nav.Link>}
 
             {/* Public Links */}
             <Nav.Link as={Link} to="/">Home</Nav.Link>
@@ -58,9 +56,24 @@ const NavbarBook = () => {
 
             {/* Buyer-Specific Links */}
             {user?.role === 'buyer' && (
-              <Nav.Link as={Link} to="/cart" className="me-3">
-                <FaShoppingCart size={20} />
-              </Nav.Link>
+              <>
+                {/* Search Bar */}
+                <Form className="d-flex me-3" onSubmit={handleSearch}>
+                  <Form.Control
+                    type="search"
+                    placeholder="Search books..."
+                    className="me-2"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  <Button type="submit" variant="outline-light">Search</Button>
+                </Form>
+
+                {/* Cart Icon */}
+                <Nav.Link as={Link} to="/cart" className="me-3">
+                  <FaShoppingCart size={20} />
+                </Nav.Link>
+              </>
             )}
 
             {/* Seller-Specific Links */}
@@ -71,19 +84,12 @@ const NavbarBook = () => {
                 className="ms-2 custom-dropdown"
                 align="end"
               >
-                <div
-                  onClick={() => setSellerDropdown(!sellerDropdown)}
-                  className="seller-dropdown-trigger"
-                >
+                <div onClick={() => setSellerDropdown(!sellerDropdown)} className="seller-dropdown-trigger">
                   Seller Panel
                 </div>
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/orders">
-                    Orders
-                  </Dropdown.Item>
-                  <Dropdown.Item as={Link} to="/AddBook">
-                    Add Book
-                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/OrderHistory">Orders</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/AddBook">Add Book</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}
@@ -96,20 +102,13 @@ const NavbarBook = () => {
                 className="ms-2 custom-dropdown"
                 align="end"
               >
-                <div
-                  onClick={() => setShow(!show)}
-                  className="profile-icon"
-                >
+                <div onClick={() => setShow(!show)} className="profile-icon">
                   {getUserInitials(user.username)}
                 </div>
                 <Dropdown.Menu>
-                  <Dropdown.Item as={Link} to="/profile">
-                    Profile
-                  </Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/profile">Profile</Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout} style={{ color: 'red' }}>
-                    Logout
-                  </Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout} style={{ color: 'red' }}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}
@@ -117,21 +116,8 @@ const NavbarBook = () => {
             {/* Auth Buttons */}
             {!user && (
               <>
-                <Button
-                  variant="outline-light"
-                  as={Link}
-                  to="/login"
-                  className="me-2"
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="primary"
-                  as={Link}
-                  to="/register"
-                >
-                  Signup
-                </Button>
+                <Button variant="outline-light" as={Link} to="/login" className="me-2">Login</Button>
+                <Button variant="primary" as={Link} to="/register">Signup</Button>
               </>
             )}
           </Nav>

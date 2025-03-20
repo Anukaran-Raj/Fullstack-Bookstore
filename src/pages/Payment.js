@@ -1,105 +1,72 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./Payment.css";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../store/cartSlice";
+import "./Payment.css"; // Modern Dark Theme Styling
 
-const Payment = () => {
+const FakePayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
+  // Get cart data from navigation state
   const { cartItems, totalAmount } = location.state || {};
 
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
-  const [cvv, setCvv] = useState("");
-  const [cardHolder, setCardHolder] = useState("");
+  // Handle Payment Submission
+  const handlePayment = () => {
+    if (!cartItems || cartItems.length === 0) {
+      alert("No items to process!");
+      navigate("/cart");
+      return;
+    }
 
-  const handlePayment = (e) => {
-    e.preventDefault();
-    alert("Payment Successful!");
-    navigate("/"); // Redirect to home page after payment
+    // Retrieve existing order history
+    const orderHistory = JSON.parse(localStorage.getItem("orderHistory")) || [];
+
+    // Create a new order
+    const newOrder = {
+      id: new Date().getTime(), // Unique order ID
+      date: new Date().toLocaleString(),
+      items: cartItems,
+      totalAmount: totalAmount.toFixed(2),
+    };
+
+    // Save new order to localStorage
+    orderHistory.push(newOrder);
+    localStorage.setItem("orderHistory", JSON.stringify(orderHistory));
+
+    // Clear the cart after successful payment
+    dispatch(clearCart());
+
+    alert("Payment successful! Your order has been placed.");
+
+    // Redirect to Order History page
+    navigate("/OrderHistory");
   };
 
   return (
-    <Container className="payment-container">
-      <Card className="payment-card">
-        <Card.Body>
-          <h2 className="text-center mb-4">Payment</h2>
+    <div className="payment-container">
+      <div className="payment-box">
+        <h2 className="payment-heading">Payment Details</h2>
+        <div className="payment-form">
+          <label>Card Number:</label>
+          <input type="text" placeholder="**** **** **** ****" readOnly />
 
-          {/* Order Summary */}
-          <div className="order-summary">
-            <h5>Order Summary</h5>
-            {cartItems?.map((item, index) => (
-              <div key={index} className="d-flex justify-content-between mb-2">
-                <span>{item.title}</span>
-                <span>${item.price}</span>
-              </div>
-            ))}
-            <div className="d-flex justify-content-between fw-bold">
-              <span>Total:</span>
-              <span>${totalAmount.toFixed(2)}</span>
-            </div>
-          </div>
+          <label>Expiry Date:</label>
+          <input type="text" placeholder="MM/YY" readOnly />
 
-          {/* Payment Form */}
-          <Form onSubmit={handlePayment} className="mt-4">
-            <Form.Group className="mb-3">
-              <Form.Label>Card Number</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="1234 5678 9012 3456"
-                value={cardNumber}
-                onChange={(e) => setCardNumber(e.target.value)}
-                required
-              />
-            </Form.Group>
+          <label>CVV:</label>
+          <input type="password" placeholder="***" readOnly />
+        </div>
 
-            <Row>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>Expiry Date</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="MM/YY"
-                    value={expiryDate}
-                    onChange={(e) => setExpiryDate(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-              <Col md={6}>
-                <Form.Group className="mb-3">
-                  <Form.Label>CVV</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="123"
-                    value={cvv}
-                    onChange={(e) => setCvv(e.target.value)}
-                    required
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
+        <h4 className="payment-amount">Total Amount: ${totalAmount?.toFixed(2)}</h4>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Card Holder's Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="John Doe"
-                value={cardHolder}
-                onChange={(e) => setCardHolder(e.target.value)}
-                required
-              />
-            </Form.Group>
-
-            <Button variant="success" type="submit" className="w-100 mt-3">
-              Pay ${totalAmount.toFixed(2)}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
+        <button className="confirm-payment-btn" onClick={handlePayment}>
+          Proceed to Payment
+        </button>
+      </div>
+    </div>
   );
 };
 
-export default Payment;
+export default FakePayment;

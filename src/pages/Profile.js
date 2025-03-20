@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import './Profile.css';
@@ -6,6 +6,17 @@ import './Profile.css';
 const Profile = () => {
   const { user, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [orderHistory, setOrderHistory] = useState([]);
+
+  useEffect(() => {
+    // Retrieve order history from localStorage
+    const orders = JSON.parse(localStorage.getItem('orderHistory')) || [];
+
+    // Sort orders by date (latest first) and get only the last two orders
+    const latestOrders = orders.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 2);
+    
+    setOrderHistory(latestOrders);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -14,7 +25,7 @@ const Profile = () => {
   };
 
   const handleChangePassword = () => {
-    navigate('/change-password'); // ✅ Navigate to change password page
+    navigate('/change-password');
   };
 
   return (
@@ -24,7 +35,7 @@ const Profile = () => {
         <h3>Menu</h3>
         <ul>
           <li onClick={() => navigate('/profile')}>Profile</li>
-          <li onClick={() => navigate('/orders')}>Orders</li>
+          <li onClick={() => navigate('/OrderHistory')}>Orders</li>
           <li onClick={handleChangePassword}>Change Password</li>
           <li onClick={handleLogout} className="logout-item">Logout</li>
         </ul>
@@ -52,14 +63,26 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Order History */}
+        {/* Latest 2 Order History */}
         <div className="order-history">
-          <h3>Your Orders</h3>
-          <ul>
-            <li>Order #1234 - "React for Beginners" - $25.99</li>
-            <li>Order #1235 - "Advanced JavaScript" - $30.99</li>
-            <li>Order #1236 - "Machine Learning Essentials" - $45.00</li>
-          </ul>
+          <h3>Latest Orders</h3>
+          {orderHistory.length > 0 ? (
+            <ul>
+              {orderHistory.map((order) => (
+                <li key={order.id}>
+                  <strong>Order ID:</strong> {order.id} - <strong>Date:</strong> {order.date}
+                  <ul>
+                    {order.items.map((item, index) => (
+                      <li key={index}>{item.name} - ${item.price.toFixed(2)}</li>
+                    ))}
+                  </ul>
+                  <strong>Total Amount:</strong> ${order.totalAmount}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No recent orders found.</p>
+          )}
         </div>
 
         {/* Logout Button */}

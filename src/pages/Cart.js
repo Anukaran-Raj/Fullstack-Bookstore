@@ -1,18 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, clearCart } from "../store/cartSlice";
 import { useNavigate } from "react-router-dom";
-import "./Cart.css"; // ✅ Import the CSS file
+import "./Cart.css"; // Import the CSS file
 
 const Cart = () => {
   const cartItems = useSelector((state) => state.cart.cartItems);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  const [updatedCart, setUpdatedCart] = useState(cartItems);
 
-  console.log("Cart Items:", cartItems);
+  // Update cart state whenever Redux state changes
+  useEffect(() => {
+    setUpdatedCart(cartItems);
+  }, [cartItems]);
+
+  console.log("Cart Items:", updatedCart);
 
   // Calculate total amount safely
-  const totalAmount = cartItems.reduce((total, item) => {
+  const totalAmount = updatedCart.reduce((total, item) => {
     if (!item.price) return total;
 
     let price = item.price;
@@ -28,19 +35,28 @@ const Cart = () => {
     return total + price;
   }, 0);
 
+  // Navigate to Fake Payment Page
   const handleProceedToPayment = () => {
-    navigate("/payment", { state: { cartItems, totalAmount } });
+    if (updatedCart.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+
+    // Redirect to Fake Payment page and pass cart details
+    navigate("/payment", {
+      state: { cartItems: updatedCart, totalAmount: totalAmount },
+    });
   };
 
   return (
     <div className="cart-container">
       <h2 className="cart-heading">Shopping Cart</h2>
-      {cartItems.length === 0 ? (
+      {updatedCart.length === 0 ? (
         <p className="empty-cart">Your cart is empty.</p>
       ) : (
         <>
           <ul className="cart-list">
-            {cartItems.map((item, index) => (
+            {updatedCart.map((item, index) => (
               <li key={item.id || index} className="cart-item">
                 <span>{item.title} - ${item.price}</span>
                 <button

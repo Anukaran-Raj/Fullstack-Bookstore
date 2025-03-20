@@ -14,6 +14,7 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import AddBook from './pages/AddBook'
 import { BrowserRouter } from 'react-router-dom';
 import Payment from './pages/Payment';
+import OrderHistory from './pages/OrderHistory';
 
 const App = () => {
     return (
@@ -27,17 +28,13 @@ const App = () => {
                 <Route path="/book" element={<BookPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/OrderHistory" element={<OrderHistory/>}/>
+                <Route path="/profile" element={<ProfilePage/>}/>
+
+               \
 
                 {/* Buyer Protected Routes */}
                 
-                <Route
-                    path="/profile"
-                    element={
-                        <ProtectedRoute allowedRoles={['buyer']}>
-                            <ProfilePage />
-                        </ProtectedRoute>
-                    }
-                />
                 <Route
                     path="/cart"
                     element={
@@ -54,26 +51,12 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
+                
 
                 {/* Seller Protected Routes */}
                 
-                <Route
-                    path="/orders"
-                    element={
-                        <ProtectedRoute allowedRoles={['seller']}>
-                            <OrdersPage />
-                        </ProtectedRoute>
-                    }
-
-                />
-                <Route
-                    path="/profile"
-                    element={
-                        <ProtectedRoute allowedRoles={['seller']}>
-                            <ProfilePage />
-                        </ProtectedRoute>
-                    }
-                />
+                
+              
                  <Route
                     path="/AddBook"
                     element={
@@ -82,6 +65,7 @@ const App = () => {
                         </ProtectedRoute>
                     }
                 />
+                
 
                 {/* Catch-all route for unknown pages */}
                 <Route path="*" element={<div>404 - Not Found</div>} />
